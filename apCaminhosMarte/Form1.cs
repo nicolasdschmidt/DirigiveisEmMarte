@@ -64,9 +64,9 @@ namespace apCaminhosMarte
             {
                 var idOrigem = int.Parse(linhaAtual.Substring(0, 3));
                 var idDestino = int.Parse(linhaAtual.Substring(3, 3));
-                var distancia = int.Parse(linhaAtual.Substring(3, 5));
-                var tempo = int.Parse(linhaAtual.Substring(8, 4));
-                var custo = int.Parse(linhaAtual.Substring(12, 5));
+                var distancia = int.Parse(linhaAtual.Substring(6, 5));
+                var tempo = int.Parse(linhaAtual.Substring(11, 4));
+                var custo = int.Parse(linhaAtual.Substring(15, 5));
 
                 var caminhoAtual = new CaminhosEntreCidadesMarte(idOrigem, idDestino, distancia, tempo, custo);
             }

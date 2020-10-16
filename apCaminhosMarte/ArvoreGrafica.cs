@@ -28,7 +28,9 @@ namespace apCaminhosMarte
 
             Font fonte = new Font("Arial", 12, FontStyle.Bold);
 
-            g.DrawString(noAtual.Info.Nome, fonte, Brushes.Black, (int)Math.Round(noAtual.Info.X * proporcao), (int)Math.Round(noAtual.Info.Y * proporcao));
+            g.DrawString(noAtual.Info.Nome, fonte, Brushes.Black, (int)Math.Round(noAtual.Info.X * proporcao)+10, (int)Math.Round(noAtual.Info.Y * proporcao)-5);
+            g.DrawEllipse(new Pen(Color.Black, 4f), (int)Math.Round(noAtual.Info.X * proporcao), (int)Math.Round(noAtual.Info.Y * proporcao), 5, 5);
+            g.FillEllipse(new SolidBrush(Color.Black), (int)Math.Round(noAtual.Info.X * proporcao), (int)Math.Round(noAtual.Info.Y * proporcao), 5, 5);
 
             DesenharCidades(noAtual.Esquerda, g, pb, proporcao);
             DesenharCidades(noAtual.Direita, g, pb, proporcao);
