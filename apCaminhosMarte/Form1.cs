@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apCaminhosMarte.ClassesRepresentativas;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,13 +25,14 @@ namespace apCaminhosMarte
         private void Form1_Shown(object sender, EventArgs e)
         {
             arvoreCidades = new ArvoreBusca<Cidade>();
-            LerArquivo("CidadesMarte.txt");
+            LerArquivoCidades("CidadesMarte.txt");
+            LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
             arvoreGrafica = new ArvoreGrafica(arvoreCidades);
             Application.DoEvents();
             pbMapa.Refresh();
         }
 
-        private void LerArquivo(string nomeArquivo)
+        private void LerArquivoCidades(string nomeArquivo)
         {
             if (!File.Exists(nomeArquivo))
                 throw new Exception($"Arquivo {nomeArquivo} não encontrado");
@@ -47,6 +49,26 @@ namespace apCaminhosMarte
 
                 var cidadeAtual = new Cidade(id, nome, x, y);
                 arvoreCidades.Incluir(cidadeAtual);
+            }
+        }
+
+        private void LerArquivoCaminhos(string nomeArquivo)
+        {
+            if (!File.Exists(nomeArquivo))
+                throw new Exception($"Arquivo {nomeArquivo} não encontrado");
+
+            var reader = new StreamReader(nomeArquivo);
+
+            string linhaAtual;
+            while ((linhaAtual = reader.ReadLine()) != null)
+            {
+                var idOrigem = int.Parse(linhaAtual.Substring(0, 3));
+                var idDestino = int.Parse(linhaAtual.Substring(3, 3));
+                var distancia = int.Parse(linhaAtual.Substring(3, 5));
+                var tempo = int.Parse(linhaAtual.Substring(8, 4));
+                var custo = int.Parse(linhaAtual.Substring(12, 5));
+
+                var caminhoAtual = new CaminhosEntreCidadesMarte(idOrigem, idDestino, distancia, tempo, custo);
             }
         }
 

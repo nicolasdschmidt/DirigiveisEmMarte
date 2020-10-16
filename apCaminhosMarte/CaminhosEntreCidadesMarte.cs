@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace apCaminhosMarte.ClassesRepresentativas
 {
-    class CaminhosEntreCidadesMarte
+    public class CaminhosEntreCidadesMarte
     {
         private int idCidadeOrigem;
         private int idCidadeDestino;
