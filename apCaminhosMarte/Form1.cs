@@ -16,6 +16,7 @@ namespace apCaminhosMarte
     {
         private ArvoreBusca<Cidade> arvoreCidades;
         private ArvoreGrafica arvoreGrafica;
+        private GrafoCaminhos grafoCidades;
 
         public Form1()
         {
@@ -26,10 +27,12 @@ namespace apCaminhosMarte
         {
             arvoreCidades = new ArvoreBusca<Cidade>();
             LerArquivoCidades("CidadesMarte.txt");
-            LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
             arvoreGrafica = new ArvoreGrafica(arvoreCidades);
+            grafoCidades = new GrafoCaminhos(arvoreCidades.Qtd);
+            LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
             Application.DoEvents();
             pbMapa.Refresh();
+            Console.WriteLine(grafoCidades);
         }
 
         private void LerArquivoCidades(string nomeArquivo)
@@ -60,7 +63,7 @@ namespace apCaminhosMarte
             var reader = new StreamReader(nomeArquivo);
 
             string linhaAtual;
-            while ((linhaAtual = reader.ReadLine()) != null)
+            while ((linhaAtual = reader.ReadLine()) != null && linhaAtual.TrimEnd() != "")
             {
                 var idOrigem = int.Parse(linhaAtual.Substring(0, 3));
                 var idDestino = int.Parse(linhaAtual.Substring(3, 3));
@@ -68,7 +71,8 @@ namespace apCaminhosMarte
                 var tempo = int.Parse(linhaAtual.Substring(11, 4));
                 var custo = int.Parse(linhaAtual.Substring(15, 5));
 
-                var caminhoAtual = new CaminhosEntreCidadesMarte(idOrigem, idDestino, distancia, tempo, custo);
+                //var caminhoAtual = new CaminhosEntreCidadesMarte(idOrigem, idDestino, distancia, tempo, custo);
+                grafoCidades.IncluirNo(idOrigem, idDestino, distancia);
             }
         }
 
@@ -95,3 +99,4 @@ namespace apCaminhosMarte
         }
     }
 }
+;

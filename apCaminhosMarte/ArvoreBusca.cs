@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,10 +13,21 @@ namespace apCaminhosMarte
     class ArvoreBusca<Dado> where Dado : IComparable<Dado>
     {
         public NoArvore<Dado> Raiz { get; set; }
+        public int Qtd { get; set; }
 
-        public void Incluir (Dado info)
+        public ArvoreBusca()
         {
-            if (Raiz == null) Raiz = new NoArvore<Dado>(info);
+            Raiz = null;
+            Qtd = 0;
+        }
+
+        public void Incluir(Dado info)
+        {
+            if (Raiz == null)
+            {
+                Raiz = new NoArvore<Dado>(info);
+                Qtd = 1;
+            }
             else Incluir(Raiz, info);
         }
 
@@ -32,11 +44,14 @@ namespace apCaminhosMarte
             if (equals == 0) throw new Exception("Nó já existe");
 
             if (equals < 0)
-                if (noAtual.Esquerda == null) noAtual.Esquerda = new NoArvore<Dado>(info);
+                if (noAtual.Esquerda == null) { noAtual.Esquerda = new NoArvore<Dado>(info); Qtd++; }
                 else Incluir(noAtual.Esquerda, info);
             else
-                if (noAtual.Direita == null) noAtual.Direita = new NoArvore<Dado>(info);
-                else Incluir(noAtual.Direita, info);
+                if (noAtual.Direita == null)
+            {
+                noAtual.Direita = new NoArvore<Dado>(info); Qtd++;
+            }
+            else Incluir(noAtual.Direita, info);
         }
 
         private Dado Buscar(NoArvore<Dado> noAtual, Dado info)
