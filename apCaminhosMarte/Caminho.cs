@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace apCaminhosMarte.ClassesRepresentativas
+namespace apCaminhosMarte
 {
-    public class CaminhosEntreCidadesMarte
+    public class Caminho
     {
-        private int idCidadeOrigem;
-        private int idCidadeDestino;
+        private int idOrigem;
+        private int idDestino;
         private int distancia;
         private int tempo;
         private int custo;
 
-        public CaminhosEntreCidadesMarte(int idOrigem, int idDestino, int distancia, int tempo, int custo)
+        public Caminho(int idOrigem, int idDestino, int distancia, int tempo, int custo)
         {
             IdCidadeOrigem = idOrigem;
             IdCidadeDestino = idDestino;
@@ -25,22 +25,22 @@ namespace apCaminhosMarte.ClassesRepresentativas
 
         public int IdCidadeOrigem 
         { 
-            get => idCidadeOrigem;
+            get => idOrigem;
             set
             {
                 if (value < 0)
                     throw new Exception("Id da Cidade de Origem inválido");
-                idCidadeOrigem = value;
+                idOrigem = value;
             }
         }
         public int IdCidadeDestino 
         { 
-            get => idCidadeDestino;
+            get => idDestino;
             set
             {
                 if (value < 0)
                     throw new Exception("Id da Cidade Destino inválido");
-                idCidadeDestino = value;
+                idDestino = value;
             }
         }
         public int Distancia 

@@ -1,5 +1,4 @@
-﻿using apCaminhosMarte.ClassesRepresentativas;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +15,7 @@ namespace apCaminhosMarte
     {
         private ArvoreBusca<Cidade> arvoreCidades;
         private ArvoreGrafica arvoreGrafica;
-        private GrafoCaminhos grafoCidades;
+        private MatrizCaminhos matrizCidades;
 
         public Form1()
         {
@@ -28,11 +27,11 @@ namespace apCaminhosMarte
             arvoreCidades = new ArvoreBusca<Cidade>();
             LerArquivoCidades("CidadesMarte.txt");
             arvoreGrafica = new ArvoreGrafica(arvoreCidades);
-            grafoCidades = new GrafoCaminhos(arvoreCidades.Qtd);
+            matrizCidades = new MatrizCaminhos(arvoreCidades.Qtd);
             LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
             Application.DoEvents();
             pbMapa.Refresh();
-            Console.WriteLine(grafoCidades);
+            Console.WriteLine(matrizCidades);
         }
 
         private void LerArquivoCidades(string nomeArquivo)
@@ -71,8 +70,8 @@ namespace apCaminhosMarte
                 var tempo = int.Parse(linhaAtual.Substring(11, 4));
                 var custo = int.Parse(linhaAtual.Substring(15, 5));
 
-                //var caminhoAtual = new CaminhosEntreCidadesMarte(idOrigem, idDestino, distancia, tempo, custo);
-                grafoCidades.IncluirNo(idOrigem, idDestino, distancia);
+                var caminhoAtual = new Caminho(idOrigem, idDestino, distancia, tempo, custo);
+                matrizCidades.Incluir(caminhoAtual);
             }
         }
 
