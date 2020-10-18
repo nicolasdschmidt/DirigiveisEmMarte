@@ -94,7 +94,9 @@ namespace apCaminhosMarte
 
             var proporcao = (double)largura / larguraOriginal;
 
+            arvoreGrafica.DesenharCaminhos(matrizCidades, e.Graphics, pbMapa, proporcao);
             arvoreGrafica.DesenharCidades(e.Graphics, pbMapa, proporcao);
+            
         }
     }
 }

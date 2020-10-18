@@ -22,6 +22,13 @@ namespace apCaminhosMarte
             matriz[c.IdCidadeOrigem, c.IdCidadeDestino] = matriz[c.IdCidadeDestino, c.IdCidadeOrigem] = c;
         }
 
+        public Caminho BuscarPeloIndice(int linha, int coluna)
+        {
+            if (linha > 0 && coluna > 0)
+                return this.matriz[linha, coluna];
+            return null;
+        }
+
         public override string ToString()
         {
             string ret = "";
