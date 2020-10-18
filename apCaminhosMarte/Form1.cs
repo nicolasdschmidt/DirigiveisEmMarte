@@ -22,6 +22,8 @@ namespace apCaminhosMarte
         public Form1()
         {
             InitializeComponent();
+            dgvMelhorCaminho.RowCount = 1;
+            dgvCaminhos.RowCount = 0;
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -76,13 +78,11 @@ namespace apCaminhosMarte
             }
         }
 
-        private void TxtCaminhos_DoubleClick(object sender, EventArgs e)
-        {
-           
-        }
-
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
+            dgvCaminhos.Rows.Clear();
+            dgvMelhorCaminho.Rows.Clear();
+            dgvMelhorCaminho.RowCount = 1;
             int origem = lsbOrigem.SelectedIndex;
             int destino = lsbDestino.SelectedIndex;
 
@@ -90,36 +90,44 @@ namespace apCaminhosMarte
 
 
             todosCaminhos = buscador.BuscarCaminho(origem, destino);
-
-            int menorDistancia = -1;
-            List<Caminho> melhorCaminho = null;
-            for (int i = 0; i < todosCaminhos.Count; i++)
-            {
-                int distanciaAtual = 0;
-                for (int j = 0; j < todosCaminhos[i].Count; j++)
-                {
-                    distanciaAtual += todosCaminhos[i][j].Distancia;
-                }
-
-                if (distanciaAtual < menorDistancia || menorDistancia < 0)
-                {
-                    menorDistancia = distanciaAtual;
-                    melhorCaminho = todosCaminhos[i];
-                }
-            }
-
             if (todosCaminhos == null) MessageBox.Show("Nenhum caminho encontrado!");
             else
             {
-                string melhorCaminhoString = "";
+                int menorDistancia = -1;
+                int maiorNumeroDePassos = -1;
+                melhorCaminho = null;
 
-                foreach (Caminho c in melhorCaminho)
+                for (int i = 0; i < todosCaminhos.Count; i++)
                 {
-                    melhorCaminhoString += c + "; ";
+                    dgvCaminhos.RowCount += 1;
+                    dgvCaminhos.ColumnCount = todosCaminhos[i].Count;
+                    int distanciaAtual = 0;
+                    for (int j = 0; j < todosCaminhos[i].Count; j++)
+                    {
+                        distanciaAtual += todosCaminhos[i][j].Distancia;
+                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j];
+                    }
+
+                    if (distanciaAtual < menorDistancia || menorDistancia < 0)
+                    {
+                        menorDistancia = distanciaAtual;
+                        melhorCaminho = todosCaminhos[i];
+                    }
                 }
 
-                MessageBox.Show("melhor caminho: " + melhorCaminhoString);
+                //string melhorCaminhoString = "";
+                int contagemDePassosDoCaminho = 0;
+                dgvMelhorCaminho.ColumnCount = melhorCaminho.Count;
+                foreach (Caminho c in melhorCaminho)
+                { 
+                    //melhorCaminhoString += c + "; ";
+                    dgvMelhorCaminho.Rows[0].Cells[contagemDePassosDoCaminho].Value = c;
+                    contagemDePassosDoCaminho++;
+                }
+
+                //MessageBox.Show("melhor caminho: " + melhorCaminhoString);
             }
+            
         }
 
         private void pbMapa_Paint(object sender, PaintEventArgs e)
