@@ -94,7 +94,6 @@ namespace apCaminhosMarte
             else
             {
                 int menorDistancia = -1;
-                int maiorNumeroDePassos = -1;
                 melhorCaminho = null;
 
                 for (int i = 0; i < todosCaminhos.Count; i++)
@@ -146,6 +145,12 @@ namespace apCaminhosMarte
             arvoreGrafica.DesenharCaminhos(matrizCidades, e.Graphics, pbMapa, proporcaoX, proporcaoY);
             arvoreGrafica.DesenharCidades(e.Graphics, pbMapa, proporcaoX, proporcaoY);
             
+        }
+
+        private void tpArvore_Paint(object sender, PaintEventArgs e)
+        {
+            //arvoreMarte.DesenharArvore(true, arvoreMarte.Raiz, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300, g);
+            arvoreGrafica.DesenharArvore(e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
         }
     }
 }
