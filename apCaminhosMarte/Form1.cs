@@ -16,6 +16,8 @@ namespace apCaminhosMarte
         private ArvoreBusca<Cidade> arvoreCidades;
         private ArvoreGrafica arvoreGrafica;
         private MatrizCaminhos matrizCidades;
+        private List<List<Caminho>> todosCaminhos;
+        private List<Caminho> melhorCaminho;
 
         public Form1()
         {
@@ -31,7 +33,6 @@ namespace apCaminhosMarte
             LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
             Application.DoEvents();
             pbMapa.Refresh();
-            Console.WriteLine(matrizCidades);
         }
 
         private void LerArquivoCidades(string nomeArquivo)
@@ -82,7 +83,43 @@ namespace apCaminhosMarte
 
         private void BtnBuscar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Buscar caminhos entre cidades selecionadas");
+            int origem = lsbOrigem.SelectedIndex;
+            int destino = lsbDestino.SelectedIndex;
+
+            var buscador = new BuscadorDeCaminhos(matrizCidades);
+
+
+            todosCaminhos = buscador.BuscarCaminho(origem, destino);
+
+            int menorDistancia = -1;
+            List<Caminho> melhorCaminho = null;
+            for (int i = 0; i < todosCaminhos.Count; i++)
+            {
+                int distanciaAtual = 0;
+                for (int j = 0; j < todosCaminhos[i].Count; j++)
+                {
+                    distanciaAtual += todosCaminhos[i][j].Distancia;
+                }
+
+                if (distanciaAtual < menorDistancia || menorDistancia < 0)
+                {
+                    menorDistancia = distanciaAtual;
+                    melhorCaminho = todosCaminhos[i];
+                }
+            }
+
+            if (todosCaminhos == null) MessageBox.Show("Nenhum caminho encontrado!");
+            else
+            {
+                string melhorCaminhoString = "";
+
+                foreach (Caminho c in melhorCaminho)
+                {
+                    melhorCaminhoString += c + "; ";
+                }
+
+                MessageBox.Show("melhor caminho: " + melhorCaminhoString);
+            }
         }
 
         private void pbMapa_Paint(object sender, PaintEventArgs e)
@@ -90,12 +127,16 @@ namespace apCaminhosMarte
             if (arvoreCidades == null) return;
 
             var larguraOriginal = 4096;
+            var alturaOriginal = 2048;
+
             var largura = pbMapa.Width;
+            var altura = pbMapa.Height;
 
-            var proporcao = (double)largura / larguraOriginal;
+            var proporcaoX = (double)largura / larguraOriginal;
+            var proporcaoY = (double)altura / alturaOriginal;
 
-            arvoreGrafica.DesenharCaminhos(matrizCidades, e.Graphics, pbMapa, proporcao);
-            arvoreGrafica.DesenharCidades(e.Graphics, pbMapa, proporcao);
+            arvoreGrafica.DesenharCaminhos(matrizCidades, e.Graphics, pbMapa, proporcaoX, proporcaoY);
+            arvoreGrafica.DesenharCidades(e.Graphics, pbMapa, proporcaoX, proporcaoY);
             
         }
     }

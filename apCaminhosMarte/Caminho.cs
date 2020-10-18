@@ -73,5 +73,15 @@ namespace apCaminhosMarte
                 custo = value;
             }
         }
+
+        public Caminho Clone()
+        {
+            return new Caminho(idOrigem, idDestino, distancia, tempo, custo);
+        }
+
+        public override string ToString()
+        {
+            return idOrigem + " => " + idDestino;
+        }
     }
 }

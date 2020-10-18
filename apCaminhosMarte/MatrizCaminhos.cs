@@ -11,6 +11,8 @@ namespace apCaminhosMarte
         Caminho[,] matriz;
         int tamanho;
 
+        public int Tamanho { get => tamanho; }
+
         public MatrizCaminhos(int qtd)
         {
             tamanho = qtd;
@@ -19,13 +21,15 @@ namespace apCaminhosMarte
 
         public void Incluir(Caminho c)
         {
-            matriz[c.IdCidadeOrigem, c.IdCidadeDestino] = matriz[c.IdCidadeDestino, c.IdCidadeOrigem] = c;
+            matriz[c.IdCidadeOrigem, c.IdCidadeDestino] = c;
+            Caminho inverso = new Caminho(c.IdCidadeDestino, c.IdCidadeOrigem, c.Distancia, c.Tempo, c.Custo);
+            matriz[c.IdCidadeDestino, c.IdCidadeOrigem] = inverso;
         }
 
         public Caminho BuscarPeloIndice(int linha, int coluna)
         {
             if (linha > 0 && coluna > 0)
-                return this.matriz[linha, coluna];
+                return matriz[linha, coluna];
             return null;
         }
 
