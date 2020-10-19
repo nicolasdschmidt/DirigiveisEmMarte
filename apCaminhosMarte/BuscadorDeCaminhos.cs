@@ -9,6 +9,10 @@ using System.Windows.Forms;
 // NICOLAS DENADAI SCHMIDT 19191
 namespace apCaminhosMarte
 {
+    /// <summary>
+    /// Classe que utiliza da técnica do backtracking recursivo
+    /// para encontrar Caminhos entre as Cidades
+    /// </summary>
     class BuscadorDeCaminhos
     {
         private MatrizCaminhos Matriz { get; set; }
