@@ -8,6 +8,10 @@ using System.Windows.Forms;
 
 namespace apCaminhosMarte
 {
+    /// <summary>
+    /// Classe que utiliza da técnica do backtracking recursivo
+    /// para encontrar Caminhos entre as Cidades
+    /// </summary>
     class BuscadorDeCaminhos
     {
         private MatrizCaminhos Matriz { get; set; }
