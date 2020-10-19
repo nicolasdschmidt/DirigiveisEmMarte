@@ -8,7 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+// ENZO FUREGATTI SPINELLA 19168
+// NICOLAS DENADAI SCHMIDT 19191
 namespace apCaminhosMarte
 {
     public partial class Form1 : Form
@@ -24,6 +25,7 @@ namespace apCaminhosMarte
             InitializeComponent();
             dgvMelhorCaminho.RowCount = 1;
             dgvCaminhos.RowCount = 0;
+            tpArvore.BackColor = Color.LightGreen;
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -149,8 +151,9 @@ namespace apCaminhosMarte
 
         private void tpArvore_Paint(object sender, PaintEventArgs e)
         {
+            
             //arvoreMarte.DesenharArvore(true, arvoreMarte.Raiz, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300, g);
-            arvoreGrafica.DesenharArvore(e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
+            arvoreGrafica.DesenharArvore(true, e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
         }
     }
 }
