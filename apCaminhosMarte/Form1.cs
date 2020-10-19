@@ -39,6 +39,7 @@ namespace apCaminhosMarte
             LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
             Application.DoEvents();
             pbMapa.Refresh();
+            pbArvore.Refresh();
         }
 
         private void LerArquivoCidades(string nomeArquivo)
@@ -171,9 +172,11 @@ namespace apCaminhosMarte
             
         }
 
-        private void tpArvore_Paint(object sender, PaintEventArgs e)
+        private void pbArvore_Paint(object sender, PaintEventArgs e)
         {
-            arvoreGrafica.DesenharArvore(true, e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
+            if (arvoreCidades == null) return;
+
+            arvoreGrafica.DesenharArvore(true, e.Graphics, (int)pbArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.2, 300);
         }
     }
 }

@@ -81,12 +81,10 @@ namespace apCaminhosMarte
                     yf = 25;
                 g.DrawLine(caneta, x, y, xf, yf);
 
-                System.Threading.Thread.Sleep(100);
                 DesenharArvore(false, noAtual.Esquerda, g, xf, yf, Math.PI / 2 + incremento,
                                        incremento * 0.55, comprimento * 0.77);
                 DesenharArvore(false, noAtual.Direita, g, xf, yf, Math.PI / 2 - incremento,
                                        incremento * 0.55, comprimento * 0.77);
-                System.Threading.Thread.Sleep(100);
 
                 SolidBrush preenchimento = new SolidBrush(Color.ForestGreen);
                 g.FillEllipse(preenchimento, xf - 35, yf - 25, 72, 45);
