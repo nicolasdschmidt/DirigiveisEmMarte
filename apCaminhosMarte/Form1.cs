@@ -77,7 +77,9 @@ namespace apCaminhosMarte
                 var tempo = int.Parse(linhaAtual.Substring(11, 4).Trim());
                 var custo = int.Parse(linhaAtual.Substring(15, 5).Trim());
 
-                var caminhoAtual = new Caminho(idOrigem, idDestino, distancia, tempo, custo);
+                Cidade cidadeExemplo = new Cidade(idOrigem);
+                Cidade cidadeExemplo2 = new Cidade(idDestino);
+                var caminhoAtual = new Caminho(idOrigem, idDestino, distancia, tempo, custo, arvoreCidades.Buscar(cidadeExemplo).Nome, arvoreCidades.Buscar(cidadeExemplo2).Nome);
                 matrizCidades.Incluir(caminhoAtual);
             }
         }
@@ -111,7 +113,7 @@ namespace apCaminhosMarte
                         colunas = novasColunas;
                         foreach (DataGridViewColumn c in dgvCaminhos.Columns)
                         {
-                            c.Width = 30;
+                            c.Width = 80;
                         }
                     }
                     int distanciaAtual = 0;
@@ -119,9 +121,12 @@ namespace apCaminhosMarte
                     for (j = 0; j < todosCaminhos[i].Count; j++)
                     {
                         distanciaAtual += todosCaminhos[i][j].Distancia;
-                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].IdCidadeOrigem;
+                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].NomeCidadeOrigem + "(" + todosCaminhos[i][j].IdCidadeOrigem + ")";
+                        //dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].IdCidadeOrigem;
+                        //dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].ToString();
                     }
-                    dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].IdCidadeDestino;
+                    //dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].IdCidadeDestino;
+                    dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].NomeCidadeDestino + "(" + todosCaminhos[i][j - 1].IdCidadeDestino + ")";
 
                     if (distanciaAtual < menorDistancia || menorDistancia < 0)
                     {
@@ -134,12 +139,15 @@ namespace apCaminhosMarte
                 int k;
                 for (k = 0; k < melhorCaminho.Count; k++)
                 {
-                    dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].IdCidadeOrigem;
+                    dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].NomeCidadeOrigem + "(" + melhorCaminho[k].IdCidadeOrigem + ")";
+                    //dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].IdCidadeOrigem;
+                    //dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].ToString();
                 }
-                dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].IdCidadeDestino;
+                //dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].IdCidadeDestino;
+                dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].NomeCidadeDestino + "(" + melhorCaminho[k - 1].IdCidadeDestino + ")";
                 foreach (DataGridViewColumn c in dgvMelhorCaminho.Columns)
                 {
-                    c.Width = 30;
+                    c.Width = 80;
                 }
             }
 
@@ -165,7 +173,7 @@ namespace apCaminhosMarte
 
         private void tpArvore_Paint(object sender, PaintEventArgs e)
         {
-            arvoreGrafica.DesenharArvore(e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
+            arvoreGrafica.DesenharArvore(true, e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
         }
     }
 }

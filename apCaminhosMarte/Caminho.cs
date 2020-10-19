@@ -92,6 +92,15 @@ namespace apCaminhosMarte
             }
         }
 
+        public string NomeCidadeOrigem
+        {
+            get => nomeCidadeOrigem;
+        }
+        public string NomeCidadeDestino
+        {
+            get => nomeCidadeDestino;
+        }
+
         public Caminho Clone()
         {
             return new Caminho(idOrigem, idDestino, distancia, tempo, custo, nomeCidadeOrigem, nomeCidadeDestino);
@@ -99,7 +108,7 @@ namespace apCaminhosMarte
 
         public override string ToString()
         {
-            return nomeCidadeOrigem + "(" + idOrigem + ")" + " => " + nomeCidadeDestino + "(" + idDestino + ")";
+            return nomeCidadeOrigem.Trim() + "(" + idOrigem + ")" + " => " + nomeCidadeDestino.Trim() + "(" + idDestino + ")";
         }
     }
 }
