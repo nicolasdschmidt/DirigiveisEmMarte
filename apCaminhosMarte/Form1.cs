@@ -8,8 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 // ENZO FUREGATTI SPINELLA 19168
 // NICOLAS DENADAI SCHMIDT 19191
+
 namespace apCaminhosMarte
 {
     public partial class Form1 : Form
@@ -49,10 +51,10 @@ namespace apCaminhosMarte
             string linhaAtual;
             while ((linhaAtual = reader.ReadLine()) != null)
             {
-                var id = int.Parse(linhaAtual.Substring(0, 3));
-                var nome = linhaAtual.Substring(3, 15);
-                var x = int.Parse(linhaAtual.Substring(18, 5));
-                var y = int.Parse(linhaAtual.Substring(23, 5));
+                var id = int.Parse(linhaAtual.Substring(0, 3).Trim());
+                var nome = linhaAtual.Substring(3, 15).Trim();
+                var x = int.Parse(linhaAtual.Substring(18, 5).Trim());
+                var y = int.Parse(linhaAtual.Substring(23, 5).Trim());
 
                 var cidadeAtual = new Cidade(id, nome, x, y);
                 arvoreCidades.Incluir(cidadeAtual);
@@ -69,11 +71,11 @@ namespace apCaminhosMarte
             string linhaAtual;
             while ((linhaAtual = reader.ReadLine()) != null && linhaAtual.TrimEnd() != "")
             {
-                var idOrigem = int.Parse(linhaAtual.Substring(0, 3));
-                var idDestino = int.Parse(linhaAtual.Substring(3, 3));
-                var distancia = int.Parse(linhaAtual.Substring(6, 5));
-                var tempo = int.Parse(linhaAtual.Substring(11, 4));
-                var custo = int.Parse(linhaAtual.Substring(15, 5));
+                var idOrigem = int.Parse(linhaAtual.Substring(0, 3).Trim());
+                var idDestino = int.Parse(linhaAtual.Substring(3, 3).Trim());
+                var distancia = int.Parse(linhaAtual.Substring(6, 5).Trim());
+                var tempo = int.Parse(linhaAtual.Substring(11, 4).Trim());
+                var custo = int.Parse(linhaAtual.Substring(15, 5).Trim());
 
                 var caminhoAtual = new Caminho(idOrigem, idDestino, distancia, tempo, custo);
                 matrizCidades.Incluir(caminhoAtual);
@@ -98,16 +100,28 @@ namespace apCaminhosMarte
                 int menorDistancia = -1;
                 melhorCaminho = null;
 
+                int colunas = 0;
                 for (int i = 0; i < todosCaminhos.Count; i++)
                 {
                     dgvCaminhos.RowCount += 1;
-                    dgvCaminhos.ColumnCount = todosCaminhos[i].Count;
+                    int novasColunas = todosCaminhos[i].Count + 1;
+                    if (novasColunas > colunas)
+                    {
+                        dgvCaminhos.ColumnCount = todosCaminhos[i].Count + 1;
+                        colunas = novasColunas;
+                        foreach (DataGridViewColumn c in dgvCaminhos.Columns)
+                        {
+                            c.Width = 30;
+                        }
+                    }
                     int distanciaAtual = 0;
-                    for (int j = 0; j < todosCaminhos[i].Count; j++)
+                    int j;
+                    for (j = 0; j < todosCaminhos[i].Count; j++)
                     {
                         distanciaAtual += todosCaminhos[i][j].Distancia;
-                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j];
+                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].IdCidadeOrigem;
                     }
+                    dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].IdCidadeDestino;
 
                     if (distanciaAtual < menorDistancia || menorDistancia < 0)
                     {
@@ -116,19 +130,19 @@ namespace apCaminhosMarte
                     }
                 }
 
-                //string melhorCaminhoString = "";
-                int contagemDePassosDoCaminho = 0;
-                dgvMelhorCaminho.ColumnCount = melhorCaminho.Count;
-                foreach (Caminho c in melhorCaminho)
-                { 
-                    //melhorCaminhoString += c + "; ";
-                    dgvMelhorCaminho.Rows[0].Cells[contagemDePassosDoCaminho].Value = c;
-                    contagemDePassosDoCaminho++;
+                dgvMelhorCaminho.ColumnCount = melhorCaminho.Count + 1;
+                int k;
+                for (k = 0; k < melhorCaminho.Count; k++)
+                {
+                    dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].IdCidadeOrigem;
                 }
-
-                //MessageBox.Show("melhor caminho: " + melhorCaminhoString);
+                dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].IdCidadeDestino;
+                foreach (DataGridViewColumn c in dgvMelhorCaminho.Columns)
+                {
+                    c.Width = 30;
+                }
             }
-            
+
         }
 
         private void pbMapa_Paint(object sender, PaintEventArgs e)
@@ -151,9 +165,7 @@ namespace apCaminhosMarte
 
         private void tpArvore_Paint(object sender, PaintEventArgs e)
         {
-            
-            //arvoreMarte.DesenharArvore(true, arvoreMarte.Raiz, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300, g);
-            arvoreGrafica.DesenharArvore(true, e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
+            arvoreGrafica.DesenharArvore(e.Graphics, (int)tpArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
         }
     }
 }
