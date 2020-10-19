@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+// ENZO FUREGATTI SPINELLA 19168
+// NICOLAS DENADAI SCHMIDT 19191
 namespace apCaminhosMarte
 {
     class Cidade : IComparable<Cidade>
@@ -69,7 +70,7 @@ namespace apCaminhosMarte
         public String ToString()
         {
             string ret = "";
-            ret += $"{Id},{Nome},{X},{Y}|";
+            ret += $"{Id},{Nome}";
             return ret;
         }
         public int CompareTo(Cidade outra)

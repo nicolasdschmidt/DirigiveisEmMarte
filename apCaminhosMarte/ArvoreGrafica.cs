@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+// ENZO FUREGATTI SPINELLA 19168
+// NICOLAS DENADAI SCHMIDT 19191
 namespace apCaminhosMarte
 {
     class ArvoreGrafica
@@ -21,9 +22,9 @@ namespace apCaminhosMarte
         {
             DesenharCidades(Arvore.Raiz, g, pb, proporcaoX, proporcaoY);
         }
-        public void DesenharArvore(Graphics g, int x, int y, double angulo, double incremento, double comprimento)
+        public void DesenharArvore(bool primeiraVez, Graphics g, int x, int y, double angulo, double incremento, double comprimento)
         {
-            DesenharArvore(true, Arvore.Raiz, g, x, y, angulo, incremento, comprimento);
+            DesenharArvore(primeiraVez, Arvore.Raiz, g, x, y, angulo, incremento, comprimento);
         }
         private void DesenharCidades(NoArvore<Cidade> noAtual, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
@@ -73,22 +74,24 @@ namespace apCaminhosMarte
             int xf, yf;
             if (noAtual != null)
             {
-                Pen caneta = new Pen(Color.Red);
-                xf = (int)Math.Round(x + Math.Cos(angulo) * comprimento);
-                yf = (int)Math.Round(y + Math.Sin(angulo) * comprimento);
+                Pen caneta = new Pen(Color.Brown);
+                xf = (int)Math.Round(x + Math.Cos(angulo) * (comprimento+10));
+                yf = (int)Math.Round(y + Math.Sin(angulo) * (comprimento+10));
                 if (primeiraVez)
                     yf = 25;
                 g.DrawLine(caneta, x, y, xf, yf);
+
                 System.Threading.Thread.Sleep(100);
                 DesenharArvore(false, noAtual.Esquerda, g, xf, yf, Math.PI / 2 + incremento,
-                                       incremento * 0.60, comprimento * 0.8);
-                DesenharArvore(false, noAtual.Direita, g, xf, yf, Math.PI / 2 + incremento,
-                                       incremento * 0.60, comprimento * 0.8);
+                                       incremento * 0.55, comprimento * 0.77);
+                DesenharArvore(false, noAtual.Direita, g, xf, yf, Math.PI / 2 - incremento,
+                                       incremento * 0.55, comprimento * 0.77);
                 System.Threading.Thread.Sleep(100);
-                SolidBrush preenchimento = new SolidBrush(Color.Blue);
-                g.FillEllipse(preenchimento, xf - 25, yf - 15, 42, 30);
-                g.DrawString(Convert.ToString(noAtual.Info.ToString()), new Font("Comic Sans", 10),
-                    new SolidBrush(Color.Yellow), xf - 23, yf - 7);
+
+                SolidBrush preenchimento = new SolidBrush(Color.ForestGreen);
+                g.FillEllipse(preenchimento, xf - 35, yf - 25, 72, 45);
+                g.DrawString(Convert.ToString(noAtual.Info.ToString()), new Font("Times New Roman", 10),
+                    new SolidBrush(Color.Black), xf - 35, yf - 7);
 
             }
         }

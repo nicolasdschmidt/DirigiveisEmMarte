@@ -1,9 +1,11 @@
 ﻿using System;
+using apCaminhosMarte;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+// ENZO FUREGATTI SPINELLA 19168
+// NICOLAS DENADAI SCHMIDT 19191
 namespace apCaminhosMarte
 {
     public class Caminho
@@ -14,6 +16,10 @@ namespace apCaminhosMarte
         private int tempo;
         private int custo;
 
+        // Variáveis para uso interno...
+        private string nomeCidadeOrigem;
+        private string nomeCidadeDestino;
+
         public Caminho(int idOrigem, int idDestino, int distancia, int tempo, int custo)
         {
             IdCidadeOrigem = idOrigem;
@@ -21,6 +27,18 @@ namespace apCaminhosMarte
             Distancia = distancia;
             Tempo = tempo;
             Custo = custo;
+        }
+
+        public Caminho(int idOrigem, int idDestino, int distancia, int tempo, int custo, string nomeOrigem, string nomeDestino)
+        {
+            IdCidadeOrigem = idOrigem;
+            IdCidadeDestino = idDestino;
+            Distancia = distancia;
+            Tempo = tempo;
+            Custo = custo;
+
+            nomeCidadeOrigem = nomeOrigem;
+            nomeCidadeDestino = nomeDestino;
         }
 
         public int IdCidadeOrigem 
@@ -76,12 +94,12 @@ namespace apCaminhosMarte
 
         public Caminho Clone()
         {
-            return new Caminho(idOrigem, idDestino, distancia, tempo, custo);
+            return new Caminho(idOrigem, idDestino, distancia, tempo, custo, nomeCidadeOrigem, nomeCidadeDestino);
         }
 
         public override string ToString()
         {
-            return idOrigem + " => " + idDestino;
+            return nomeCidadeOrigem + "(" + idOrigem + ")" + " => " + nomeCidadeDestino + "(" + idDestino + ")";
         }
     }
 }
