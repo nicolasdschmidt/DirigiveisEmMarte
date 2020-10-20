@@ -126,6 +126,7 @@
             this.dgvMelhorCaminho.ReadOnly = true;
             this.dgvMelhorCaminho.Size = new System.Drawing.Size(277, 71);
             this.dgvMelhorCaminho.TabIndex = 10;
+            this.dgvMelhorCaminho.SelectionChanged += new System.EventHandler(this.dgvMelhorCaminho_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -187,6 +188,7 @@
             this.dgvCaminhos.ReadOnly = true;
             this.dgvCaminhos.Size = new System.Drawing.Size(277, 181);
             this.dgvCaminhos.TabIndex = 9;
+            this.dgvCaminhos.SelectionChanged += new System.EventHandler(this.dgvCaminhos_SelectionChanged);
             // 
             // Column1
             // 

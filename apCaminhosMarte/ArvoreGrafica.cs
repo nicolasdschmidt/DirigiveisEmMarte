@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 // ENZO FUREGATTI SPINELLA 19168
 // NICOLAS DENADAI SCHMIDT 19191
+
 namespace apCaminhosMarte
 {
     class ArvoreGrafica
@@ -26,13 +28,23 @@ namespace apCaminhosMarte
         {
             DesenharArvore(primeiraVez, Arvore.Raiz, g, x, y, angulo, incremento, comprimento);
         }
+
+        public void DesenharCaminho(List<Caminho> caminhoAtual, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
+        {
+            Pen pen = new Pen(Color.DarkBlue, 3.0f);
+            foreach (Caminho c in caminhoAtual)
+            {
+                g.DrawLine(pen, (int)Math.Round(c.Origem.X * proporcaoX), (int)Math.Round(c.Origem.Y * proporcaoY), (int)Math.Round(c.Destino.X * proporcaoX), (int)Math.Round(c.Destino.Y * proporcaoY));
+            }
+        }
+
         private void DesenharCidades(NoArvore<Cidade> noAtual, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
             if (noAtual == null) return;
 
             Font fonte = new Font("Arial", 12, FontStyle.Bold);
 
-            g.DrawString(noAtual.Info.Nome, fonte, Brushes.Black, (int)Math.Round(noAtual.Info.X * proporcaoX)+10, (int)Math.Round(noAtual.Info.Y * proporcaoY) -5);
+            g.DrawString(noAtual.Info.Nome, fonte, Brushes.Black, (int)Math.Round(noAtual.Info.X * proporcaoX) + 10, (int)Math.Round(noAtual.Info.Y * proporcaoY) - 5);
             g.DrawEllipse(new Pen(Color.Black, 4f), (int)Math.Round(noAtual.Info.X * proporcaoX), (int)Math.Round(noAtual.Info.Y * proporcaoY), 5, 5);
             g.FillEllipse(new SolidBrush(Color.Black), (int)Math.Round(noAtual.Info.X * proporcaoX), (int)Math.Round(noAtual.Info.Y * proporcaoY), 5, 5);
 
@@ -45,15 +57,12 @@ namespace apCaminhosMarte
             Font fonte = new Font("Arial", 12, FontStyle.Bold);
             for (int i = 0; i < Arvore.Qtd; i++)
             {
-                for(int j = 0; j < Arvore.Qtd; j++)
+                for (int j = 0; j < Arvore.Qtd; j++)
                 {
                     if ((caminhoAtual = matriz.BuscarPeloIndice(i, j)) != null)
                     {
-                        Cidade cidadeOrigem = new Cidade(caminhoAtual.IdCidadeOrigem);
-                        Cidade cidadeDestino = new Cidade(caminhoAtual.IdCidadeDestino);
-
-                        cidadeOrigem = Arvore.Buscar(cidadeOrigem);
-                        cidadeDestino = Arvore.Buscar(cidadeDestino);
+                        Cidade cidadeOrigem = Arvore.Buscar(caminhoAtual.Origem);
+                        Cidade cidadeDestino = Arvore.Buscar(caminhoAtual.Destino);
 
                         Random rand = new Random();
                         int mediaCidadesX = Convert.ToInt32(((cidadeDestino.X + cidadeOrigem.X) / 2) * proporcaoX);
@@ -61,7 +70,7 @@ namespace apCaminhosMarte
                         int variacao = rand.Next(-20, 20);
 
                         PointF[] vetorDePontosParaAsCurvas = { new PointF((int)Math.Round(cidadeOrigem.X * proporcaoX),(int)Math.Round(cidadeOrigem.Y * proporcaoY)),
-                                                               new PointF(mediaCidadesX+variacao, mediaCidadesY+variacao), 
+                                                               new PointF(mediaCidadesX+variacao, mediaCidadesY+variacao),
                                                                new PointF((int)Math.Round(cidadeDestino.X * proporcaoX), (int)Math.Round(cidadeDestino.Y * proporcaoY)) };
                         g.DrawCurve(new Pen(Color.DeepSkyBlue, 2.5f), vetorDePontosParaAsCurvas, 0.5F);
                         g.DrawString(caminhoAtual.Distancia + "", fonte, new SolidBrush(Color.Blue), mediaCidadesX, mediaCidadesY);
@@ -75,8 +84,8 @@ namespace apCaminhosMarte
             if (noAtual != null)
             {
                 Pen caneta = new Pen(Color.Brown);
-                xf = (int)Math.Round(x + Math.Cos(angulo) * (comprimento+10));
-                yf = (int)Math.Round(y + Math.Sin(angulo) * (comprimento+10));
+                xf = (int)Math.Round(x + Math.Cos(angulo) * (comprimento + 10));
+                yf = (int)Math.Round(y + Math.Sin(angulo) * (comprimento + 10));
                 if (primeiraVez)
                     yf = 25;
                 g.DrawLine(caneta, x, y, xf, yf);

@@ -22,9 +22,9 @@ namespace apCaminhosMarte
 
         public void Incluir(Caminho c)
         {
-            matriz[c.IdCidadeOrigem, c.IdCidadeDestino] = c;
-            Caminho inverso = new Caminho(c.IdCidadeDestino, c.IdCidadeOrigem, c.Distancia, c.Tempo, c.Custo, c.NomeCidadeDestino, c.NomeCidadeOrigem);
-            matriz[c.IdCidadeDestino, c.IdCidadeOrigem] = inverso;
+            matriz[c.Origem.Id, c.Destino.Id] = c;
+            Caminho inverso = new Caminho(c.Destino, c.Origem, c.Distancia, c.Tempo, c.Custo);
+            matriz[c.Destino.Id, c.Origem.Id] = inverso;
         }
 
         public Caminho BuscarPeloIndice(int linha, int coluna)

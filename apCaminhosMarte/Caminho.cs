@@ -4,61 +4,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 // ENZO FUREGATTI SPINELLA 19168
 // NICOLAS DENADAI SCHMIDT 19191
+
 namespace apCaminhosMarte
 {
     public class Caminho
     {
-        private int idOrigem;
-        private int idDestino;
+        private Cidade origem;
+        private Cidade destino;
         private int distancia;
         private int tempo;
         private int custo;
 
-        // Variáveis para uso interno...
-        private string nomeCidadeOrigem;
-        private string nomeCidadeDestino;
-
-        public Caminho(int idOrigem, int idDestino, int distancia, int tempo, int custo)
+        public Caminho(Cidade origem, Cidade destino, int distancia, int tempo, int custo)
         {
-            IdCidadeOrigem = idOrigem;
-            IdCidadeDestino = idDestino;
+            Origem = origem;
+            Destino = destino;
             Distancia = distancia;
             Tempo = tempo;
             Custo = custo;
         }
 
-        public Caminho(int idOrigem, int idDestino, int distancia, int tempo, int custo, string nomeOrigem, string nomeDestino)
-        {
-            IdCidadeOrigem = idOrigem;
-            IdCidadeDestino = idDestino;
-            Distancia = distancia;
-            Tempo = tempo;
-            Custo = custo;
-
-            nomeCidadeOrigem = nomeOrigem;
-            nomeCidadeDestino = nomeDestino;
-        }
-
-        public int IdCidadeOrigem 
+        public Cidade Origem 
         { 
-            get => idOrigem;
+            get => origem;
             set
             {
-                if (value < 0)
-                    throw new Exception("Id da Cidade de Origem inválido");
-                idOrigem = value;
+                if (value == null)
+                    throw new Exception("Origem inválida");
+                origem = value;
             }
         }
-        public int IdCidadeDestino 
+        public Cidade Destino 
         { 
-            get => idDestino;
+            get => destino;
             set
             {
-                if (value < 0)
-                    throw new Exception("Id da Cidade Destino inválido");
-                idDestino = value;
+                if (value == null)
+                    throw new Exception("Destino inválido");
+                destino = value;
             }
         }
         public int Distancia 
@@ -92,23 +78,14 @@ namespace apCaminhosMarte
             }
         }
 
-        public string NomeCidadeOrigem
-        {
-            get => nomeCidadeOrigem;
-        }
-        public string NomeCidadeDestino
-        {
-            get => nomeCidadeDestino;
-        }
-
         public Caminho Clone()
         {
-            return new Caminho(idOrigem, idDestino, distancia, tempo, custo, nomeCidadeOrigem, nomeCidadeDestino);
+            return new Caminho(origem, destino, distancia, tempo, custo);
         }
 
         public override string ToString()
         {
-            return nomeCidadeOrigem.Trim() + "(" + idOrigem + ")" + " => " + nomeCidadeDestino.Trim() + "(" + idDestino + ")";
+            return origem.Nome + "(" + origem.Id + ")" + " => " + destino.Nome + "(" + destino.Id + ")";
         }
     }
 }

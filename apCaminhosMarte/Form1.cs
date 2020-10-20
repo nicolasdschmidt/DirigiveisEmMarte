@@ -21,6 +21,9 @@ namespace apCaminhosMarte
         private MatrizCaminhos matrizCidades;
         private List<List<Caminho>> todosCaminhos;
         private List<Caminho> melhorCaminho;
+        private List<Caminho> caminhoSelecionado;
+
+        private double proporcaoX, proporcaoY;
 
         public Form1()
         {
@@ -78,9 +81,9 @@ namespace apCaminhosMarte
                 var tempo = int.Parse(linhaAtual.Substring(11, 4).Trim());
                 var custo = int.Parse(linhaAtual.Substring(15, 5).Trim());
 
-                Cidade cidadeExemplo = new Cidade(idOrigem);
-                Cidade cidadeExemplo2 = new Cidade(idDestino);
-                var caminhoAtual = new Caminho(idOrigem, idDestino, distancia, tempo, custo, arvoreCidades.Buscar(cidadeExemplo).Nome, arvoreCidades.Buscar(cidadeExemplo2).Nome);
+                Cidade cidadeOrigem = new Cidade(idOrigem);
+                Cidade cidadeDestino = new Cidade(idDestino);
+                var caminhoAtual = new Caminho(cidadeOrigem, cidadeDestino, distancia, tempo, custo);
                 matrizCidades.Incluir(caminhoAtual);
             }
         }
@@ -95,11 +98,26 @@ namespace apCaminhosMarte
 
             var buscador = new BuscadorDeCaminhos(matrizCidades);
 
+            todosCaminhos = new List<List<Caminho>>();
 
-            todosCaminhos = buscador.BuscarCaminho(origem, destino);
-            if (todosCaminhos == null) MessageBox.Show("Nenhum caminho encontrado!");
+            var todosCaminhosTemp = buscador.BuscarCaminho(origem, destino);
+
+            if (todosCaminhosTemp == null) MessageBox.Show("Nenhum caminho encontrado!");
             else
             {
+                foreach (List<Caminho> lista in todosCaminhosTemp)
+                {
+                    var listaTemp = new List<Caminho>();
+                    foreach (Caminho c in lista)
+                    {
+                        var cidadeOrigemTemp = arvoreCidades.Buscar(c.Origem);
+                        var cidadeDestinoTemp = arvoreCidades.Buscar(c.Destino);
+                        var caminhoTemp = new Caminho(cidadeOrigemTemp, cidadeDestinoTemp, c.Distancia, c.Tempo, c.Custo);
+                        listaTemp.Add(caminhoTemp);
+                    }
+                    todosCaminhos.Add(listaTemp);
+                }
+
                 int menorDistancia = -1;
                 melhorCaminho = null;
 
@@ -112,22 +130,15 @@ namespace apCaminhosMarte
                     {
                         dgvCaminhos.ColumnCount = todosCaminhos[i].Count + 1;
                         colunas = novasColunas;
-                        foreach (DataGridViewColumn c in dgvCaminhos.Columns)
-                        {
-                            c.Width = 80;
-                        }
                     }
                     int distanciaAtual = 0;
                     int j;
                     for (j = 0; j < todosCaminhos[i].Count; j++)
                     {
                         distanciaAtual += todosCaminhos[i][j].Distancia;
-                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].NomeCidadeOrigem + "(" + todosCaminhos[i][j].IdCidadeOrigem + ")";
-                        //dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].IdCidadeOrigem;
-                        //dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].ToString();
+                        dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j].Origem.Nome + " (" + todosCaminhos[i][j].Origem.Id + ")";
                     }
-                    //dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].IdCidadeDestino;
-                    dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].NomeCidadeDestino + "(" + todosCaminhos[i][j - 1].IdCidadeDestino + ")";
+                    dgvCaminhos.Rows[i].Cells[j].Value = todosCaminhos[i][j - 1].Destino.Nome + " (" + todosCaminhos[i][j - 1].Destino.Id + ")";
 
                     if (distanciaAtual < menorDistancia || menorDistancia < 0)
                     {
@@ -140,16 +151,9 @@ namespace apCaminhosMarte
                 int k;
                 for (k = 0; k < melhorCaminho.Count; k++)
                 {
-                    dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].NomeCidadeOrigem + "(" + melhorCaminho[k].IdCidadeOrigem + ")";
-                    //dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].IdCidadeOrigem;
-                    //dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].ToString();
+                    dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k].Origem.Nome + " (" + melhorCaminho[k].Origem.Id + ")";
                 }
-                //dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].IdCidadeDestino;
-                dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].NomeCidadeDestino + "(" + melhorCaminho[k - 1].IdCidadeDestino + ")";
-                foreach (DataGridViewColumn c in dgvMelhorCaminho.Columns)
-                {
-                    c.Width = 80;
-                }
+                dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].Destino.Nome + " (" + melhorCaminho[k - 1].Destino.Id + ")";
             }
 
         }
@@ -164,19 +168,43 @@ namespace apCaminhosMarte
             var largura = pbMapa.Width;
             var altura = pbMapa.Height;
 
-            var proporcaoX = (double)largura / larguraOriginal;
-            var proporcaoY = (double)altura / alturaOriginal;
+            proporcaoX = (double)largura / larguraOriginal;
+            proporcaoY = (double)altura / alturaOriginal;
 
             arvoreGrafica.DesenharCaminhos(matrizCidades, e.Graphics, pbMapa, proporcaoX, proporcaoY);
             arvoreGrafica.DesenharCidades(e.Graphics, pbMapa, proporcaoX, proporcaoY);
-            
+
+            if (caminhoSelecionado != null)
+                arvoreGrafica.DesenharCaminho(caminhoSelecionado, e.Graphics, pbArvore, proporcaoX, proporcaoY);
         }
 
         private void pbArvore_Paint(object sender, PaintEventArgs e)
         {
             if (arvoreCidades == null) return;
 
-            arvoreGrafica.DesenharArvore(true, e.Graphics, (int)pbArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.2, 300);
+            arvoreGrafica.DesenharArvore(true, e.Graphics, pbArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.2, 300);
+        }
+
+        private void dgvMelhorCaminho_SelectionChanged(object sender, EventArgs e)
+        {
+            if (todosCaminhos == null) return;
+            try
+            {
+                caminhoSelecionado = melhorCaminho;
+                pbMapa.Refresh();
+            }
+            catch (Exception) { }
+        }
+
+        private void dgvCaminhos_SelectionChanged(object sender, EventArgs e)
+        {
+            if (todosCaminhos == null) return;
+            try
+            {
+                caminhoSelecionado = todosCaminhos[dgvCaminhos.CurrentCell.RowIndex];
+                pbMapa.Refresh();
+            }
+            catch (Exception) { }
         }
     }
 }
