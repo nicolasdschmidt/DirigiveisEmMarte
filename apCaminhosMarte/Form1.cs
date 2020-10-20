@@ -37,6 +37,7 @@ namespace apCaminhosMarte
         {
             arvoreCidades = new ArvoreBusca<Cidade>();
             LerArquivoCidades("CidadesMarte.txt");
+            LerArquivoCidadesOrdenado("CidadesMarteOrdenado.txt");
             arvoreGrafica = new ArvoreGrafica(arvoreCidades);
             matrizCidades = new MatrizCaminhos(arvoreCidades.Qtd);
             LerArquivoCaminhos("CaminhosEntreCidadesMarte.txt");
@@ -62,6 +63,27 @@ namespace apCaminhosMarte
 
                 var cidadeAtual = new Cidade(id, nome, x, y);
                 arvoreCidades.Incluir(cidadeAtual);
+            }
+        }
+
+        private void LerArquivoCidadesOrdenado(string nomeArquivo)
+        {
+            if (!File.Exists(nomeArquivo))
+                throw new Exception($"Arquivo {nomeArquivo} não encontrado");
+
+            var reader = new StreamReader(nomeArquivo);
+
+            lsbOrigem.Items.Clear();
+            lsbDestino.Items.Clear();
+
+            string linhaAtual;
+            while ((linhaAtual = reader.ReadLine()) != null)
+            {
+                var id = int.Parse(linhaAtual.Substring(0, 3).Trim());
+                var nome = linhaAtual.Substring(3, 15).Trim();
+
+                lsbOrigem.Items.Add(id + " - " + nome);
+                lsbDestino.Items.Add(id + " - " + nome);
             }
         }
 
@@ -155,7 +177,7 @@ namespace apCaminhosMarte
                 }
                 dgvMelhorCaminho.Rows[0].Cells[k].Value = melhorCaminho[k - 1].Destino.Nome + " (" + melhorCaminho[k - 1].Destino.Id + ")";
             }
-
+            caminhoSelecionado = melhorCaminho;
         }
 
         private void pbMapa_Paint(object sender, PaintEventArgs e)
