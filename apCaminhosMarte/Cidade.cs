@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace apCaminhosMarte
 {
+    /// <summary>
+    /// Classe que representa um Objeto Cidade feito a partir dos dados do ArquivoTexto do projeto
+    /// </summary>
     public class Cidade : IComparable<Cidade>
     {
         private int id;
@@ -86,6 +89,7 @@ namespace apCaminhosMarte
             ret += $"{Id},{Nome}";
             return ret;
         }
+        // CompareTo comparando os Ids das Cidades como esperado pelo enunciado do projeto
         public int CompareTo(Cidade outra)
         {
             if (this.Id > outra.Id)
@@ -95,10 +99,7 @@ namespace apCaminhosMarte
 
             return 0;
         }
-        /*public int CompareTo(Cidade outra)
-        {
-            return Id.CompareTo(outra.Id);
-        }*/
+
 
         public Cidade Clone()
         {

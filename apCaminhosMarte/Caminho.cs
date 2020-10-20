@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace apCaminhosMarte
 {
+    /// <summary>
+    /// Classe que representa um Objeto Caminho feito a partir dos dados do ArquivoTexto do projeto
+    /// </summary>
     public class Caminho
     {
         private Cidade origem;
@@ -82,7 +85,8 @@ namespace apCaminhosMarte
         {
             return new Caminho(origem, destino, distancia, tempo, custo);
         }
-
+        
+        // ToString deste modo para aparecer nos DataGridViews
         public override string ToString()
         {
             return origem.Nome + "(" + origem.Id + ")" + " => " + destino.Nome + "(" + destino.Id + ")";

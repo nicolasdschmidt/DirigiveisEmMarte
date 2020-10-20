@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 // NICOLAS DENADAI SCHMIDT 19191
 namespace apCaminhosMarte
 {
+    /// <summary>
+    /// Classe que representa um nó da árvore binaria (ArvoreBusca)
+    /// usada no programa.
+    /// </summary>
     class NoArvore<Dado>
     {
         NoArvore<Dado> esquerda, direita;

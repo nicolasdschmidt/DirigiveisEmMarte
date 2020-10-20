@@ -11,6 +11,10 @@ using System.Windows.Forms;
 
 namespace apCaminhosMarte
 {
+    /// <summary>
+    /// Classe que contém todos os métodos gráficos do projeto
+    /// Isto é, métodos para desenhar no PictureBox principal e no secundário foram feitos aqui
+    /// </summary>
     class ArvoreGrafica
     {
         public ArvoreBusca<Cidade> Arvore { get; set; }
@@ -19,7 +23,8 @@ namespace apCaminhosMarte
         {
             Arvore = arvore;
         }
-
+        // Métodos Públicos dos outros com o mesmo nome para quando ele for chamado, não precisar passar a árvore
+        // o que seria um problema a mais para nosso grupo
         public void DesenharCidades(Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
             DesenharCidades(Arvore.Raiz, g, pb, proporcaoX, proporcaoY);
@@ -29,6 +34,7 @@ namespace apCaminhosMarte
             DesenharArvore(primeiraVez, Arvore.Raiz, g, x, y, angulo, incremento, comprimento);
         }
 
+        // Método para desenhar um caminho destacado dos demais (usado quando uma linha dos dgvs é clicada)
         public void DesenharCaminho(List<Caminho> caminhoAtual, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
             Pen pen = new Pen(Color.Yellow, 3.0f);
@@ -38,6 +44,7 @@ namespace apCaminhosMarte
             }
         }
 
+        // Método para desenhar bolinhas nas coordenadas dentro da proporção da imagem de cada cidade e seu nome logo ao lado
         private void DesenharCidades(NoArvore<Cidade> noAtual, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
             if (noAtual == null) return;
@@ -51,6 +58,8 @@ namespace apCaminhosMarte
             DesenharCidades(noAtual.Esquerda, g, pb, proporcaoX, proporcaoY);
             DesenharCidades(noAtual.Direita, g, pb, proporcaoX, proporcaoY);
         }
+
+        // Método para desenhar todos os caminhos entre as cidades da Matriz, ou seja, todos os dados dos arquivos textos
         public void DesenharCaminhos(MatrizCaminhos matriz, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
             Caminho caminhoAtual;
@@ -78,6 +87,9 @@ namespace apCaminhosMarte
                 }
             }
         }
+
+        // Método usado para Desenhar a árvore binária no outro pictureBox, baseado no método do professor porém com algumas alterações
+        // nas proporções e nas cores dos elementos da árvore
         private void DesenharArvore(bool primeiraVez, NoArvore<Cidade> noAtual, Graphics g, int x, int y, double angulo, double incremento, double comprimento)
         {
             int xf, yf;
