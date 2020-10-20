@@ -31,7 +31,7 @@ namespace apCaminhosMarte
 
         public void DesenharCaminho(List<Caminho> caminhoAtual, Graphics g, PictureBox pb, double proporcaoX, double proporcaoY)
         {
-            Pen pen = new Pen(Color.DarkBlue, 3.0f);
+            Pen pen = new Pen(Color.Yellow, 3.0f);
             foreach (Caminho c in caminhoAtual)
             {
                 g.DrawLine(pen, (int)Math.Round(c.Origem.X * proporcaoX), (int)Math.Round(c.Origem.Y * proporcaoY), (int)Math.Round(c.Destino.X * proporcaoX), (int)Math.Round(c.Destino.Y * proporcaoY));
